@@ -17,7 +17,7 @@ On offerwall apps like Freecash, a reward is credited only if a postback travels
 Full design: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 
 ## Stack
-Python 3.11 · DuckDB · FastAPI · Streamlit · Anthropic SDK (Claude Opus 5.5)
+Python 3.11 · FastAPI · DuckDB (BigQuery-style SQL) · LangGraph · Claude Opus 5.5 · Streamlit, chosen to match Almedia's own stack (see docs/ARCHITECTURE.md §6)
 
 ## Layout (planned)
 ```
