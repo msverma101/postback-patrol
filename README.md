@@ -1,4 +1,6 @@
-# Offer Sentinel
+# Postback Patrol 🚨
+
+*Nobody should do the task and not get paid.*
 
 An AI agent that keeps a rewards marketplace healthy. Built for the **Almedia track** at HackLab × BRISA (21–22 Nov 2026, CIC Berlin): *Agentic Monitoring for an Ads Marketplace App*.
 
