@@ -1,30 +1,22 @@
-# Postback Patrol 🚨
+# Postback Patrol 🚨: Eye of the System
 
-*Nobody should do the task and not get paid.*
-
-An AI agent that keeps a rewards marketplace healthy. Built for the **Almedia track** at HackLab × BRISA (21–22 Nov 2026, CIC Berlin): *Agentic Monitoring for an Ads Marketplace App*.
-
-## The problem
-On offerwall apps like Freecash, a reward is credited only if a postback travels **user → game → MMP → app**. When one link breaks (often for just one OS or country), users do the task and don't get paid. Today it's usually noticed from support ticket spikes, hours later, and fixed by hand.
+A fully autonomous monitoring system for a mock shopping marketplace. Built for the **Almedia track** at HackLab × BRISA (21–22 Nov 2026, CIC Berlin): *Eye of the System: Fully Agentic Monitoring*.
 
 ## What it does
-1. **Detectors** watch clicks, postbacks, payouts and tickets every minute, per offer × OS × country.
-2. A **Claude investigator** digs into each alert with read-only tools and decides: tracking break, fraud, config error, MMP delay, infra, or nothing wrong.
-3. A **policy gate** decides what runs automatically (banner, incident) and what needs one-click approval (pause offer, hold payouts, credit users).
-4. **Outputs:** incident report, advertiser escalation, support macro, audit log.
-5. An **eval harness** replays 7 fault scenarios with known answers and scores detection, accuracy, false actions and time saved compared with waiting for tickets.
+1. **Metric graph:** about 35 marketplace metrics connected by typed edges: exact formulas, breakdowns by country, platform and category, funnel steps, possible causes and events. A tree view lets people browse it.
+2. **Automatic extension:** give it a new metric (name, description, SQL). It works out where the metric fits by testing candidate formulas against the data, and marks ambiguous fits instead of guessing.
+3. **Continuous monitoring:** it decides what to watch based on importance, surprise and how recently each metric was checked. Expected values account for time of day and day of week. Late data and planned events are filtered out before anything becomes an alert.
+4. **Autonomous investigation:** a best-first search over the graph. It splits a change exactly into its parts, narrows it to the group responsible, then tests possible causes against releases and events. It stops once a supported cause explains at least 80% of the change.
+5. **Reports:** € impact, the evidence chain, explanations that were ruled out, what's still uncertain, and the full query trail. Incidents are deduplicated and tracked until they resolve.
+
+The code does the maths. Claude makes the judgement calls and writes the story.
 
 Full design: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 
 ## Stack
-Python 3.11 · FastAPI · DuckDB (BigQuery-style SQL) · LangGraph · Claude Opus 5.5 · Streamlit, chosen to match Almedia's own stack (see docs/ARCHITECTURE.md §6)
+Python 3.12 · uv · DuckDB · networkx · Anthropic SDK (Claude Opus 5.5) · Streamlit. Everything except the Claude API is free and runs on a laptop.
 
 ## Layout (planned)
 ```
-sim/        traffic simulator + fault injector
-detectors/  anomaly detectors (SQL)
-agent/      investigator agent, tools, diagnosis schema
-actions/    policy gate + actions + outputs
-eval/       scenarios + scoreboard
-app/        dashboard
+sim/  warehouse/  graph/  extender/  monitor/  investigate/  incidents/  llm/  app/  eval/
 ```
